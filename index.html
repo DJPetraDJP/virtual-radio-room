@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Radio Room</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: Arial, sans-serif; }
+        canvas { display: block; }
+        #instructions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 24px 32px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 420px;
+            z-index: 10;
+            line-height: 1.5;
+        }
+        #instructions h1 { margin: 0 0 12px; font-size: 1.4rem; color: #ff69b4; }
+        #instructions p { margin: 8px 0; font-size: 0.95rem; }
+        #instructions .key { background: #333; padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+        #hud {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        #now-playing {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            color: #ffb6c1;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="instructions">
+        <h1>Virtual Radio Room</h1>
+        <p>Click to enter and look around with the mouse.</p>
+        <p>Move with <span class="key">W</span> <span class="key">A</span> <span class="key">S</span> <span class="key">D</span> or arrow keys.</p>
+        <p>Approach the radio and click a button to play a song.</p>
+        <p>A pink robot will serve cheese and wine while circulating the room.</p>
+        <p style="margin-top:16px; opacity:0.8;">Press <span class="key">Esc</span> to release the mouse.</p>
+    </div>
+    <div id="hud">Near radio – click a button</div>
+    <div id="now-playing"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/PointerLockControls.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
