@@ -7,6 +7,21 @@
     <style>
         body { margin: 0; overflow: hidden; background: #000; font-family: Arial, sans-serif; }
         canvas { display: block; }
+        #instructions {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            background: rgba(0,0,0,0.6);
+            padding: 18px 24px;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 0 20px rgba(255,20,147,0.2);
+        }
         #hud {
             position: absolute;
             bottom: 20px;
@@ -140,6 +155,8 @@
 
     <div id="hud">Near radio – click a button</div>
     <div id="now-playing"></div>
+
+    <div id="instructions">Klicke, um den Raum zu betreten<br><small>Bewegen: WASD / Pfeile · ESC: Maus freigeben</small></div>
     
     <div class="controls-info">
         <div>🖱️ Maus: Umschauen</div>
