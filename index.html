@@ -1,169 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Virtual Radio Room</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #000; font-family: Arial, sans-serif; }
-        canvas { display: block; }
-        #instructions {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            background: rgba(0,0,0,0.6);
-            padding: 18px 24px;
-            border-radius: 10px;
-            font-size: 1rem;
-            text-align: center;
-            cursor: pointer;
-            z-index: 200;
-            box-shadow: 0 0 20px rgba(255,20,147,0.2);
-        }
-        #hud {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            color: #fff;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        #now-playing {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            color: #ffb6c1;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        #upload-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 20, 147, 0.9);
-            padding: 20px;
-            border-radius: 12px;
-            color: #fff;
-            z-index: 100;
-            max-width: 300px;
-            box-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
-        }
-        #upload-panel h2 {
-            margin: 0 0 15px;
-            font-size: 1.1rem;
-            color: #fff;
-            text-shadow: 0 0 10px #ff1493;
-        }
-        .upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .upload-form input[type="text"],
-        .upload-form input[type="file"] {
-            padding: 8px;
-            border: 2px solid #fff;
-            border-radius: 6px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            font-size: 0.9rem;
-        }
-        .upload-form input[type="text"]::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-        .upload-form input[type="file"]::file-selector-button {
-            background: #ff1493;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .upload-form button {
-            background: #fff;
-            color: #ff1493;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .upload-form button:hover {
-            background: #ffb6c1;
-            transform: scale(1.05);
-        }
-        #song-list {
-            margin-top: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 6px;
-        }
-        .song-item {
-            padding: 8px;
-            background: rgba(255,255,255,0.1);
-            margin: 5px 0;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-        }
-        .song-item button {
-            background: #ff1493;
-            color: #fff;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .controls-info {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            color: #fff;
-            background: rgba(0,0,0,0.5);
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            text-align: right;
-        }
+        html,body{height:100%;margin:0;background:#000;overflow:hidden}
+        #container{width:100%;height:100%}
+        /* hidden file input - triggered by radio button clicks */
+        #fileInput{display:none}
+        canvas{display:block}
     </style>
 </head>
 <body>
-    <div id="upload-panel">
-        <h2>🎵 UPLOAD LIEDER</h2>
-        <div class="upload-form">
-            <input type="text" id="songTitle" placeholder="Lied-Titel...">
-            <input type="file" id="songFile" accept="audio/*">
-            <button onclick="uploadSong()">Upload</button>
-            <div id="song-list"></div>
-        </div>
-    </div>
+    <div id="container"></div>
 
-    <div id="hud">Near radio – click a button</div>
-    <div id="now-playing"></div>
-
-    <div id="instructions">Klicke, um den Raum zu betreten<br><small>Bewegen: WASD / Pfeile · ESC: Maus freigeben</small></div>
-    
-    <div class="controls-info">
-        <div>🖱️ Maus: Umschauen</div>
-        <div>⌨️ WASD/Pfeile: Bewegung</div>
-        <div>🎧 Radio: Click zum Spielen</div>
-        <div>ESC: Maus freigeben</div>
-    </div>
+    <!-- Hidden file input: used to upload an audio file and assign it to a radio button -->
+    <input id="fileInput" type="file" accept="audio/*" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/PointerLockControls.js"></script>
